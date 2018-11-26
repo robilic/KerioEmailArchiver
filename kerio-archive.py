@@ -1,8 +1,9 @@
+
 import os, sys
 import email
 import pyzmail
 
-from shutil import copyfile
+from shutil import copyfile, move
 import datetime as datetime
 
 
@@ -56,6 +57,9 @@ def archive_folder(folder_name):
         print "Directory for folder doesn't seem to exist: ", folder_name
         return
     today = datetime.date.today()
+    days_to_keep = 365 # emails have to be this old to archive
+	# ignore folders with this text in name. these will be compared case-insensitive
+	no_archive_directives = ("noarchive", "no archive")
 
     # recursively walk email directory
     for dirpath, dirnames, filenames in os.walk(folder_name):
@@ -78,7 +82,7 @@ def archive_folder(folder_name):
                     else:
                         # is this message over 1 year old? archive it.
                         diff = today - msg_date
-                        if diff.days > 365:
+                        if diff.days > days_to_keep:
                             # build the new directory starting with the message year
                             # create if it doesn't exist
                             target_dir_name = os.path.join(cwd, str(msg_date.year), dirpath)
@@ -86,16 +90,14 @@ def archive_folder(folder_name):
                                 print "Need to create the directory ", target_dir_name
                                 os.makedirs(target_dir_name)
 
-                            print "copied to ", target_dir_name
-                            movefile(full_filename, os.path.join(target_dir_name, f))
+                            print "moved to ", target_dir_name
+                            move(full_filename, os.path.join(target_dir_name, f))
 
 
 # main script begins
 
 # folders to archive
 folders_to_archive = ("INBOX", "Sent Items", "Deleted Items")
-# ignore folders with this text in name. these will be compared case-insensitive
-no_archive_directives = ("noarchive", "no archive")
 
 cwd = os.getcwd()
 print "current dir: ", cwd
