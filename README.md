@@ -5,13 +5,13 @@ I thought I'd share a small script I made to help with archiving Kerio mailboxes
 
 This script runs on Python 2.6 (have not tested under 3, as our email server is CentOS 5 - ancient!). You can run this script from the terminal in a users mail folder and it will move the files around into folders based on year.
 
-You can set days_to_keep as how many days old an email must be to not archive. A value of 90 will not archive any emails that are not over 90 days old.
+You can set `days_to_keep` as how many days old an email must be to not archive. A value of 90 will not archive any emails that are not over 90 days old.
 
-no_archive_directives can be set to anything you don't want to archive. With the default value, if you put 'NO ARCHIVE' in the folder name, it won't be archived.
+`no_archive_directives` can be set to anything you don't want to archive. With the default value, if you put 'NO ARCHIVE' in the folder name, it won't be archived. It is not case-sensitive.
 
 So, on my system I run the script from:
 
-    /opt/kerio/mailserver/store/mail/mydomain.com/username
+    /opt/kerio/mailserver/store/mail/mydomain.com/mailboxname
 
 You'll end up with something like
 
