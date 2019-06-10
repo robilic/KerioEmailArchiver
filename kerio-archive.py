@@ -52,6 +52,10 @@ def archive_folder(folder_name):
         none
 
     """
+    # these must be created in each folder so that Kerio will re-index
+    status_file_slug_name = 'status.fld'
+    index_file_slug_name = 'index.fld'
+    
     print "Archiving ", folder_name
     if not os.path.isdir(folder_name):
         print "Directory for folder doesn't seem to exist: ", folder_name
@@ -89,8 +93,18 @@ def archive_folder(folder_name):
                             if not os.path.exists(target_dir_name):
                                 print "Need to create the directory ", target_dir_name
                                 os.makedirs(target_dir_name)
+                                
+                            slug_file = os.path.join(target_dir_name, status_file_slug_name)
+                            if not os.path.isfile(slug_file):
+                                print "Creating status file slug"
+                                open(slug_file, 'w+').close()
+                                
+                            slug_file = os.path.join(target_dir_name, index_file_slug_name)
+                            if not os.path.isfile(slug_file):
+                                print "Creating status file slug"
+                                open(slug_file, 'w+').close()
 
-                            print "moved to ", target_dir_name
+                                print "moved to ", target_dir_name
                             move(full_filename, os.path.join(target_dir_name, f))
 
 
